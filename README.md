@@ -13,7 +13,7 @@ $global:DefaultVIServer | select Name,Version,Build
 
 ### List Clusters
 ```
-Get-Cluster | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},vSanEnabled,HAEnabled,HAFailoverLevel,HAAdmissionControlEnabled,DrsEnabled,DrsMode,DrsAutomationLevel,EVCMode
+Get-Cluster | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Hosts';e={($_ | Get-VMHost).Count}},vSanEnabled,HAEnabled,HAFailoverLevel,HAAdmissionControlEnabled,DrsEnabled,DrsMode,DrsAutomationLevel,EVCMode
 ```
 
 ### List Hosts

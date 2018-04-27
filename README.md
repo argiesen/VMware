@@ -23,7 +23,7 @@ Get-VMHost | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Cluster'
 
 ### Get NTP configuration
 ```
-Get-VMHost | select Name,@{l='NTPServer';e={$_ | Get-VMHostNtpServer}},@{l='Policy';e={($_ | Get-VMHostService | Where {$_.Key -eq "ntpd").Policy}},@{l='Running';e={($_ | Get-VMHostService | Where {$_.Key -eq "ntpd").Running}}
+Get-VMHost | select Name,@{l='NTPServer';e={$_ | Get-VMHostNtpServer}},@{l='Policy';e={($_ | Get-VMHostService | Where {$_.Key -eq "ntpd"}).Policy}},@{l='Running';e={($_ | Get-VMHostService | Where {$_.Key -eq "ntpd"}).Running}}
 ```
 
 ### Get SSO Site Name

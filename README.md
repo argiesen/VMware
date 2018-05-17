@@ -23,7 +23,10 @@ Get-VMHost | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Cluster'
 
 ### List VMs
 ```
-Get-VM | select Name,VMHost,Guest,PowerState,NumCpu,MemoryMB,Version,Notes
+New-VIProperty -Name ToolsVersion -ObjectType VirtualMachine -ValueFromExtensionProperty 'Config.tools.ToolsVersion' -Force
+New-VIProperty -Name ToolsVersionStatus -ObjectType VirtualMachine -ValueFromExtensionProperty 'Guest.ToolsVersionStatus' -Force
+
+Get-VM | select Name,VMHost,Guest,PowerState,NumCpu,MemoryMB,Version,ToolsVersion,ToolsVersionStatus,Notes
 ```
 
 ### Get NTP configuration

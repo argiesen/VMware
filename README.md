@@ -26,7 +26,7 @@ Get-VMHost | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Cluster'
 New-VIProperty -Name ToolsVersion -ObjectType VirtualMachine -ValueFromExtensionProperty 'Config.tools.ToolsVersion' -Force
 New-VIProperty -Name ToolsVersionStatus -ObjectType VirtualMachine -ValueFromExtensionProperty 'Guest.ToolsVersionStatus' -Force
 
-Get-VM | select Name,VMHost,Guest,PowerState,NumCpu,MemoryMB,Version,ToolsVersion,ToolsVersionStatus,Notes
+Get-VM | select Name,VMHost,Guest,PowerState,NumCpu,MemoryMB,Version,ToolsVersion,ToolsVersionStatus,@{N='SyncTimeWithHost';E={($_ | Get-View).Config.Tools.syncTimeWithHost}},@{N='ToolsUpgradePolicy';E={($_ | Get-View).Config.Tools.ToolsUpgradePolicy}},Notes
 ```
 
 ### Get NTP configuration
@@ -36,3 +36,28 @@ Get-VMHost | select Name,@{l='NTPServer';e={$_ | Get-VMHostNtpServer}},@{l='Poli
 
 ### Get SSO Site Name
 https://www.virtuallyghetto.com/2015/04/vcenter-server-6-0-tidbits-part-2-what-is-my-sso-domain-name-site-name.html
+
+### Check HCL
+https://labs.vmware.com/flings/esxi-compatibility-checker
+
+### Enable VMware Tools upgrade at power cycle
+```
+foreach ($v in (Get-VM)) {
+	$vm = $v | Get-View
+	$vmConfigSpec = New-Object VMware.Vim.VirtualMachineConfigSpec
+	$vmConfigSpec.Tools = New-Object VMware.Vim.ToolsConfigInfo
+	$vmConfigSpec.Tools.ToolsUpgradePolicy = "UpgradeAtPowerCycle"
+	$vm.ReconfigVM($vmConfigSpec)
+}
+```
+
+### Disable time sync with host
+```
+foreach ($v in (Get-VM)) {
+	$vm = $v | Get-View
+	$vmConfigSpec = New-Object VMware.Vim.VirtualMachineConfigSpec
+	$vmConfigSpec.Tools = New-Object VMware.Vim.ToolsConfigInfo
+	$vmConfigSpec.Tools.syncTimeWithHost = $false
+	$vm.ReconfigVM($vmConfigSpec)
+}
+```

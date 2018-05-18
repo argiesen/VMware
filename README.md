@@ -18,7 +18,7 @@ Get-Cluster | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Hosts';
 
 ### List Hosts
 ```
-Get-VMHost | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Cluster';e={$_.Parent}},Manufacturer,Model,@{l='IPAddress';e={($_ | Get-VMHostNetworkAdapter | where ManagementTrafficEnabled -eq $true).IP}},@{l='NumberOfVM';e={($_ | Get-VM).Count}},Version,Build,MaxEVCMode,IsStandalone,@{l='SSH';e={$_ | Get-VMHostService | where {$_.Key -eq "TSM-SSH"}}}
+Get-VMHost | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Cluster';e={$_.Parent}},Manufacturer,Model,@{l='IPAddress';e={($_ | Get-VMHostNetworkAdapter | where ManagementTrafficEnabled -eq $true).IP}},@{l='NumberOfVM';e={($_ | Get-VM).Count}},Version,Build,MaxEVCMode,IsStandalone,@{l='SSH';e={$_ | Get-VMHostService | where {$_.Key -eq "TSM-SSH"}}},@{Name="HostTime";Expression={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}}
 ```
 
 ### List VMs
@@ -37,6 +37,16 @@ Get-VM | Get-Snapshot | Where {$_.Created -lt (Get-Date).AddDays(-7)} | Select-O
 ### Get NTP configuration
 ```
 Get-VMHost | select Name,@{l='NTPServer';e={$_ | Get-VMHostNtpServer}},@{l='Policy';e={($_ | Get-VMHostService | Where {$_.Key -eq "ntpd"}).Policy}},@{l='Running';e={($_ | Get-VMHostService | Where {$_.Key -eq "ntpd"}).Running}}
+```
+
+### Get host time
+```
+Get-VMHost | select Name,@{Name="Time";Expression={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}}
+```
+
+### Set host time to match local machine
+```
+Get-VMHost | foreach{(Get-View $_.ExtensionData.configManager.DateTimeSystem).UpdateDateTime((Get-Date -format u))}
 ```
 
 ### Get SSO Site Name

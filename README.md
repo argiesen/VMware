@@ -29,6 +29,11 @@ New-VIProperty -Name ToolsVersionStatus -ObjectType VirtualMachine -ValueFromExt
 Get-VM | select Name,VMHost,Guest,PowerState,NumCpu,MemoryMB,Version,ToolsVersion,ToolsVersionStatus,@{N='SyncTimeWithHost';E={($_ | Get-View).Config.Tools.syncTimeWithHost}},@{N='ToolsUpgradePolicy';E={($_ | Get-View).Config.Tools.ToolsUpgradePolicy}},Notes
 ```
 
+### List snapshots over 7 days old
+```
+Get-VM | Get-Snapshot | Where {$_.Created -lt (Get-Date).AddDays(-7)} | Select-Object VM, Name, Created, SizeMB
+```
+
 ### Get NTP configuration
 ```
 Get-VMHost | select Name,@{l='NTPServer';e={$_ | Get-VMHostNtpServer}},@{l='Policy';e={($_ | Get-VMHostService | Where {$_.Key -eq "ntpd"}).Policy}},@{l='Running';e={($_ | Get-VMHostService | Where {$_.Key -eq "ntpd"}).Running}}

@@ -34,13 +34,10 @@ Get-VM | select Name,VMHost,Guest,PowerState,NumCpu,MemoryMB,Version,ToolsVersio
 Get-VM | Get-Snapshot | Where {$_.Created -lt (Get-Date).AddDays(-7)} | Select-Object VM, Name, Created, SizeMB
 ```
 
-### Get NTP configuration
+### Get NTP configuration and host time
 ```
 Get-VMHost | select Name,@{l='NTPServer';e={$_ | Get-VMHostNtpServer}},@{l='Policy';e={($_ | Get-VMHostService | Where {$_.Key -eq "ntpd"}).Policy}},@{l='Running';e={($_ | Get-VMHostService | Where {$_.Key -eq "ntpd"}).Running}}
-```
 
-### Get host time
-```
 Get-VMHost | select Name,@{Name="Time";Expression={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}}
 ```
 

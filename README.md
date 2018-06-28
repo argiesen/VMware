@@ -26,7 +26,7 @@ Get-VMHost | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Cluster'
 New-VIProperty -Name ToolsVersion -ObjectType VirtualMachine -ValueFromExtensionProperty 'Config.tools.ToolsVersion' -Force | Out-Null
 New-VIProperty -Name ToolsVersionStatus -ObjectType VirtualMachine -ValueFromExtensionProperty 'Guest.ToolsVersionStatus' -Force | Out-Null
 
-Get-VM | select Name,VMHost,Guest,PowerState,NumCpu,MemoryMB,UsedSpaceGB,ProvisionedSpaceGB,Version,ToolsVersion,ToolsVersionStatus,@{N='SyncTimeWithHost';E={($_ | Get-View).Config.Tools.syncTimeWithHost}},@{N='ToolsUpgradePolicy';E={($_ | Get-View).Config.Tools.ToolsUpgradePolicy}},Notes
+Get-VM | select Name,VMHost,Guest,PowerState,NumCpu,MemoryMB,UsedSpaceGB,ProvisionedSpaceGB,Version,ToolsVersion,ToolsVersionStatus,@{l='SyncTimeWithHost';e={($_ | Get-View).Config.Tools.syncTimeWithHost}},@{l='ToolsUpgradePolicy';e={($_ | Get-View).Config.Tools.ToolsUpgradePolicy}},Notes
 ```
 
 ### List snapshots over 7 days old
@@ -36,9 +36,9 @@ Get-VM | Get-Snapshot | where {$_.Created -lt (Get-Date).AddDays(-7)} | Select-O
 
 ### Get NTP configuration and host time
 ```
-Get-VMHost | select Name,@{l='NTPServer';e={$_ | Get-VMHostNtpServer}},@{l='Policy';e={($_ | Get-VMHostService | Where {$_.Key -eq "ntpd"}).Policy}},@{l='Running';e={($_ | Get-VMHostService | Where {$_.Key -eq "ntpd"}).Running}}
+Get-VMHost | select Name,@{l='NTPServer';e={$_ | Get-VMHostNtpServer}},@{l='Policy';e={($_ | Get-VMHostService | where {$_.Key -eq "ntpd"}).Policy}},@{l='Running';e={($_ | Get-VMHostService | where {$_.Key -eq "ntpd"}).Running}}
 
-Get-VMHost | select Name,@{Name="Time";Expression={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}}
+Get-VMHost | select Name,@{l='Time';Expression={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}}
 ```
 
 ### Set host time to match local machine

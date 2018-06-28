@@ -31,7 +31,7 @@ Get-VM | select Name,VMHost,Guest,PowerState,NumCpu,MemoryMB,UsedSpaceGB,Provisi
 
 ### List snapshots over 7 days old
 ```
-Get-VM | Get-Snapshot | Where {$_.Created -lt (Get-Date).AddDays(-7)} | Select-Object VM,Name,Created,SizeMB
+Get-VM | Get-Snapshot | where {$_.Created -lt (Get-Date).AddDays(-7)} | Select-Object VM,Name,Created,SizeMB
 ```
 
 ### Get NTP configuration and host time
@@ -43,7 +43,7 @@ Get-VMHost | select Name,@{Name="Time";Expression={(Get-View $_.ExtensionData.co
 
 ### Set host time to match local machine
 ```
-Get-VMHost | foreach{(Get-View $_.ExtensionData.configManager.DateTimeSystem).UpdateDateTime((Get-Date -format u))}
+Get-VMHost | foreach {(Get-View $_.ExtensionData.configManager.DateTimeSystem).UpdateDateTime((Get-Date -format u))}
 ```
 
 ### Get SSO Site Name

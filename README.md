@@ -26,7 +26,7 @@ Get-VMHost | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Cluster'
 New-VIProperty -Name ToolsVersion -ObjectType VirtualMachine -ValueFromExtensionProperty 'Config.tools.ToolsVersion' -Force
 New-VIProperty -Name ToolsVersionStatus -ObjectType VirtualMachine -ValueFromExtensionProperty 'Guest.ToolsVersionStatus' -Force
 
-Get-VM | select Name,VMHost,Guest,PowerState,NumCpu,MemoryMB,Version,ToolsVersion,ToolsVersionStatus,@{N='SyncTimeWithHost';E={($_ | Get-View).Config.Tools.syncTimeWithHost}},@{N='ToolsUpgradePolicy';E={($_ | Get-View).Config.Tools.ToolsUpgradePolicy}},Notes
+Get-VM | select Name,VMHost,Guest,PowerState,NumCpu,MemoryMB,UsedSpaceGB,ProvisionedSpaceGB,Version,ToolsVersion,ToolsVersionStatus,@{N='SyncTimeWithHost';E={($_ | Get-View).Config.Tools.syncTimeWithHost}},@{N='ToolsUpgradePolicy';E={($_ | Get-View).Config.Tools.ToolsUpgradePolicy}},Notes
 ```
 
 ### List snapshots over 7 days old

@@ -38,7 +38,7 @@ Get-VM | Get-Snapshot | where {$_.Created -lt (Get-Date).AddDays(-7)} | Select-O
 ```
 Get-VMHost | select Name,@{l='NTPServer';e={$_ | Get-VMHostNtpServer}},@{l='Policy';e={($_ | Get-VMHostService | where {$_.Key -eq "ntpd"}).Policy}},@{l='Running';e={($_ | Get-VMHostService | where {$_.Key -eq "ntpd"}).Running}}
 
-Get-VMHost | select Name,@{l='Time';Expression={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}}
+Get-VMHost | select Name,@{l='Time';e={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}}
 ```
 
 ### Set host time to match local machine

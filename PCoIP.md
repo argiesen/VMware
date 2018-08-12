@@ -86,3 +86,5 @@ pcoip.audio_bandwidth_limit
 pcoip.maximum_frame_rate
 * 12 is acceptable for regular video
 * 8 is acceptable for web browsing
+
+**Reference:** https://getadmx.com/?Category=VMware_Horizon_7

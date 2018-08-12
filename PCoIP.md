@@ -1,4 +1,4 @@
-Source: https://www.teradici.com/web-help/TER1105004/Sess-Plan_Admn-Gd.pdf
+**Source:** https://www.teradici.com/web-help/TER1105004/Sess-Plan_Admn-Gd.pdf
 
 | Worker Type | Bandwidth | User Experience | Use Cases |
 |-------------|-----------|-----------------|-----------|

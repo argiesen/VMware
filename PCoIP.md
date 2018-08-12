@@ -14,10 +14,7 @@
 New-Item -Path "HKLM:\Software\Policies" -Name "Teradici" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "PCoIP" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici\PCoIP" -Name "pcoip_admin_defaults" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "Client" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici\Client" -Name "PCoIP" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici\Client\PCoIP" -Name "pcoip_admin_defaults" -Force | Out-Null
-New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\Client\PCoIP\pcoip_admin_defaults" -Name "pcoip.max_link_rate" -PropertyType DWORD -Value "900000" -Force -ErrorAction SilentlyContinue | Out-Null
+New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.max_link_rate" -PropertyType DWORD -Value "900000" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.audio_bandwidth_limit" -PropertyType DWORD -Value "256" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.minimum_image_quality" -PropertyType DWORD -Value "50" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_initial_image_quality" -PropertyType DWORD -Value "90" -Force -ErrorAction SilentlyContinue | Out-Null
@@ -30,10 +27,7 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-Item -Path "HKLM:\Software\Policies" -Name "Teradici" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "PCoIP" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici\PCoIP" -Name "pcoip_admin_defaults" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "Client" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici\Client" -Name "PCoIP" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici\Client\PCoIP" -Name "pcoip_admin_defaults" -Force | Out-Null
-New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\Client\PCoIP\pcoip_admin_defaults" -Name "pcoip.max_link_rate" -PropertyType DWORD -Value "900000" -Force -ErrorAction SilentlyContinue | Out-Null
+New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.max_link_rate" -PropertyType DWORD -Value "900000" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.audio_bandwidth_limit" -PropertyType DWORD -Value "256" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.minimum_image_quality" -PropertyType DWORD -Value "40" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_initial_image_quality" -PropertyType DWORD -Value "80" -Force -ErrorAction SilentlyContinue | Out-Null
@@ -46,10 +40,7 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-Item -Path "HKLM:\Software\Policies" -Name "Teradici" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "PCoIP" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici\PCoIP" -Name "pcoip_admin_defaults" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "Client" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici\Client" -Name "PCoIP" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici\Client\PCoIP" -Name "pcoip_admin_defaults" -Force | Out-Null
-New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\Client\PCoIP\pcoip_admin_defaults" -Name "pcoip.max_link_rate" -PropertyType DWORD -Value "4000" -Force -ErrorAction SilentlyContinue | Out-Null
+New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.max_link_rate" -PropertyType DWORD -Value "4000" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.audio_bandwidth_limit" -PropertyType DWORD -Value "50" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.minimum_image_quality" -PropertyType DWORD -Value "40" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_initial_image_quality" -PropertyType DWORD -Value "70" -Force -ErrorAction SilentlyContinue | Out-Null
@@ -62,10 +53,7 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-Item -Path "HKLM:\Software\Policies" -Name "Teradici" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "PCoIP" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici\PCoIP" -Name "pcoip_admin_defaults" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "Client" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici\Client" -Name "PCoIP" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici\Client\PCoIP" -Name "pcoip_admin_defaults" -Force | Out-Null
-New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\Client\PCoIP\pcoip_admin_defaults" -Name "pcoip.max_link_rate" -PropertyType DWORD -Value "1200" -Force -ErrorAction SilentlyContinue | Out-Null
+New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.max_link_rate" -PropertyType DWORD -Value "1200" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.audio_bandwidth_limit" -PropertyType DWORD -Value "50" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.minimum_image_quality" -PropertyType DWORD -Value "30" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_initial_image_quality" -PropertyType DWORD -Value "70" -Force -ErrorAction SilentlyContinue | Out-Null
@@ -78,10 +66,7 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-Item -Path "HKLM:\Software\Policies" -Name "Teradici" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "PCoIP" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici\PCoIP" -Name "pcoip_admin_defaults" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "Client" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici\Client" -Name "PCoIP" -Force | Out-Null
-New-Item -Path "HKLM:\Software\Policies\Teradici\Client\PCoIP" -Name "pcoip_admin_defaults" -Force | Out-Null
-New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\Client\PCoIP\pcoip_admin_defaults" -Name "pcoip.max_link_rate" -PropertyType DWORD -Value "300" -Force -ErrorAction SilentlyContinue | Out-Null
+New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.max_link_rate" -PropertyType DWORD -Value "300" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.audio_bandwidth_limit" -PropertyType DWORD -Value "0" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.minimum_image_quality" -PropertyType DWORD -Value "30" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_initial_image_quality" -PropertyType DWORD -Value "70" -Force -ErrorAction SilentlyContinue | Out-Null

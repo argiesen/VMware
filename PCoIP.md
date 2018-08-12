@@ -75,12 +75,14 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 ```
 
 **Notes**
+
 pcoip.audio_bandwidth_limit
 * Value less than 50 may result in no audio
 * 50 - 450 = FM radio and phone call quality
 * 450+ = stereo, high-quality, compressed audio
 * 1600 = uncompressed high quality stereo audio
 * 500 is default
+
 pcoip.maximum_frame_rate
 * 12 is acceptable for regular video
 * 8 is acceptable for web browsing

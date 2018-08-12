@@ -9,7 +9,7 @@
 | Profile E | Lowest | Limited | Task Workers |
 
 
-#### Profile A - represents the best graphics experience, default for PCoIP Remote Workstation Cards.
+**Profile A - represents the best graphics experience, default for PCoIP Remote Workstation Cards.**
 ```
 New-Item -Path "HKLM:\Software\Policies" -Name "Teradici" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "PCoIP" -Force | Out-Null
@@ -22,7 +22,7 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.enable_build_to_lossless" -PropertyType DWORD -Value "1" -Force -ErrorAction SilentlyContinue | Out-Null
 ```
 
-#### Profile B - represents a standard experience, default for PCoIP Standard and Graphics Agents.
+**Profile B - represents a standard experience, default for PCoIP Standard and Graphics Agents.**
 ```
 New-Item -Path "HKLM:\Software\Policies" -Name "Teradici" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "PCoIP" -Force | Out-Null
@@ -35,7 +35,7 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.enable_build_to_lossless" -PropertyType DWORD -Value "0" -Force -ErrorAction SilentlyContinue | Out-Null
 ```
 
-#### Profile C - represents bandwidth-optimized experience for knowledge workers operating in constrained network scenarios.
+**Profile C - represents bandwidth-optimized experience for knowledge workers operating in constrained network scenarios.**
 ```
 New-Item -Path "HKLM:\Software\Policies" -Name "Teradici" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "PCoIP" -Force | Out-Null
@@ -48,7 +48,7 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.enable_build_to_lossless" -PropertyType DWORD -Value "0" -Force -ErrorAction SilentlyContinue | Out-Null
 ```
 
-#### Profile D - represents bandwidth-constrained experience for task workers operating in constrained network scenarios.
+** Profile D - represents bandwidth-constrained experience for task workers operating in constrained network scenarios. **
 ```
 New-Item -Path "HKLM:\Software\Policies" -Name "Teradici" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "PCoIP" -Force | Out-Null
@@ -61,7 +61,7 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.enable_build_to_lossless" -PropertyType DWORD -Value "0" -Force -ErrorAction SilentlyContinue | Out-Null
 ```
 
-#### Profile E - represents maximum bandwidth-constrained experience suitable for task workers only - for example 10 small screen users sharing a T1 link.
+**Profile E - represents maximum bandwidth-constrained experience suitable for task workers only - for example 10 small screen users sharing a T1 link.**
 ```
 New-Item -Path "HKLM:\Software\Policies" -Name "Teradici" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "PCoIP" -Force | Out-Null
@@ -73,3 +73,14 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_frame_rate" -PropertyType DWORD -Value "4" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.enable_build_to_lossless" -PropertyType DWORD -Value "0" -Force -ErrorAction SilentlyContinue | Out-Null
 ```
+
+**Notes**
+pcoip.audio_bandwidth_limit
+* Value less than 50 may result in no audio
+* 50 - 450 = FM radio and phone call quality
+* 450+ = stereo, high-quality, compressed audio
+* 1600 = uncompressed high quality stereo audio
+* 500 is default
+pcoip.maximum_frame_rate
+* 12 is acceptable for regular video
+* 8 is acceptable for web browsing

@@ -42,7 +42,7 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.audio_bandwidth_limit" -PropertyType DWORD -Value "48" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.minimum_image_quality" -PropertyType DWORD -Value "40" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_initial_image_quality" -PropertyType DWORD -Value "70" -Force -ErrorAction SilentlyContinue | Out-Null
-New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_frame_rate" -PropertyType DWORD -Value "16" -Force -ErrorAction SilentlyContinue | Out-Null
+New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_frame_rate" -PropertyType DWORD -Value "15" -Force -ErrorAction SilentlyContinue | Out-Null
 ```
 
 #### Profile D - represents bandwidth-constrained experience for task workers operating in constrained network scenarios.

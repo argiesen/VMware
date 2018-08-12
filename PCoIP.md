@@ -87,4 +87,7 @@ pcoip.maximum_frame_rate
 * 12 is acceptable for regular video
 * 8 is acceptable for web browsing
 
+pcoip.enable_build_to_lossless
+* Build to lossless should be reserved for medical imaging or graphics design scenarios.
+
 **Reference:** https://getadmx.com/?Category=VMware_Horizon_7

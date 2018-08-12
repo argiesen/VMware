@@ -19,6 +19,7 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.minimum_image_quality" -PropertyType DWORD -Value "50" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_initial_image_quality" -PropertyType DWORD -Value "90" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_frame_rate" -PropertyType DWORD -Value "60" -Force -ErrorAction SilentlyContinue | Out-Null
+New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.enable_build_to_lossless" -PropertyType DWORD -Value "1" -Force -ErrorAction SilentlyContinue | Out-Null
 ```
 
 #### Profile B - represents a standard experience, default for PCoIP Standard and Graphics Agents.
@@ -31,6 +32,7 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.minimum_image_quality" -PropertyType DWORD -Value "40" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_initial_image_quality" -PropertyType DWORD -Value "80" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_frame_rate" -PropertyType DWORD -Value "30" -Force -ErrorAction SilentlyContinue | Out-Null
+New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.enable_build_to_lossless" -PropertyType DWORD -Value "0" -Force -ErrorAction SilentlyContinue | Out-Null
 ```
 
 #### Profile C - represents bandwidth-optimized experience for knowledge workers operating in constrained network scenarios.
@@ -43,6 +45,7 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.minimum_image_quality" -PropertyType DWORD -Value "40" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_initial_image_quality" -PropertyType DWORD -Value "70" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_frame_rate" -PropertyType DWORD -Value "15" -Force -ErrorAction SilentlyContinue | Out-Null
+New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.enable_build_to_lossless" -PropertyType DWORD -Value "0" -Force -ErrorAction SilentlyContinue | Out-Null
 ```
 
 #### Profile D - represents bandwidth-constrained experience for task workers operating in constrained network scenarios.
@@ -55,6 +58,7 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.minimum_image_quality" -PropertyType DWORD -Value "30" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_initial_image_quality" -PropertyType DWORD -Value "70" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_frame_rate" -PropertyType DWORD -Value "8" -Force -ErrorAction SilentlyContinue | Out-Null
+New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.enable_build_to_lossless" -PropertyType DWORD -Value "0" -Force -ErrorAction SilentlyContinue | Out-Null
 ```
 
 #### Profile E - represents maximum bandwidth-constrained experience suitable for task workers only - for example 10 small screen users sharing a T1 link.
@@ -67,4 +71,5 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.minimum_image_quality" -PropertyType DWORD -Value "30" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_initial_image_quality" -PropertyType DWORD -Value "70" -Force -ErrorAction SilentlyContinue | Out-Null
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.maximum_frame_rate" -PropertyType DWORD -Value "4" -Force -ErrorAction SilentlyContinue | Out-Null
+New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.enable_build_to_lossless" -PropertyType DWORD -Value "0" -Force -ErrorAction SilentlyContinue | Out-Null
 ```

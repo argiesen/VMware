@@ -48,7 +48,7 @@ New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defau
 New-ItemProperty -Path "HKLM:\Software\Policies\Teradici\PCoIP\pcoip_admin_defaults" -Name "pcoip.enable_build_to_lossless" -PropertyType DWORD -Value "0" -Force -ErrorAction SilentlyContinue | Out-Null
 ```
 
-** Profile D - represents bandwidth-constrained experience for task workers operating in constrained network scenarios. **
+**Profile D - represents bandwidth-constrained experience for task workers operating in constrained network scenarios.**
 ```
 New-Item -Path "HKLM:\Software\Policies" -Name "Teradici" -Force | Out-Null
 New-Item -Path "HKLM:\Software\Policies\Teradici" -Name "PCoIP" -Force | Out-Null

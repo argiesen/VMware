@@ -29,6 +29,13 @@ New-VIProperty -Name ToolsVersionStatus -ObjectType VirtualMachine -ValueFromExt
 Get-VM | select Name,VMHost,Guest,PowerState,NumCpu,MemoryMB,UsedSpaceGB,ProvisionedSpaceGB,Version,ToolsVersion,ToolsVersionStatus,@{l='SyncTimeWithHost';e={($_ | Get-View).Config.Tools.syncTimeWithHost}},@{l='ToolsUpgradePolicy';e={($_ | Get-View).Config.Tools.ToolsUpgradePolicy}},Notes
 ```
 
+### List Datastores
+```
+Get-Datastore | select Name,Datacenter,Type,State,Accessible,FreeSpaceMB,CapacityGB,FileSystemVersion
+
+Get-Datastore | where {$_.ExtensionData.Host.Count -gt 1} | select Name,CapacityGB,FreeSpaceGB,@{l='HostCount';e={$_.ExtensionData.Host.Count}}
+```
+
 ### List snapshots over 7 days old
 ```
 Get-VM | Get-Snapshot | where {$_.Created -lt (Get-Date).AddDays(-7)} | Select-Object VM,Name,Created,SizeMB

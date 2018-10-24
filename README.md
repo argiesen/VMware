@@ -11,10 +11,13 @@ $global:DefaultVIServer | select Name,Version,Build
 "" | select @{l='DatacenterCount';e={(Get-Datacenter).Count}},@{l='ClusterCount';e={(Get-Cluster).Count}},@{l='HostCount';e={(Get-VMHost).Count}},@{l='VMCount';e={(Get-VM).Count}}
 ```
 
-### List Cluster by Features, Resources
+### List Cluster Features
 ```
 Get-Cluster | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Hosts';e={($_ | Get-VMHost).Count}},vSanEnabled,HAEnabled,HAFailoverLevel,HAAdmissionControlEnabled,DrsEnabled,DrsAutomationLevel,EVCMode
+```
 
+### List Cluster Resources
+```
 $ClusterResources = @()
 $Clusters = Get-Cluster
 foreach ($Cluster in $Clusters){
@@ -37,10 +40,13 @@ New-VIProperty -Name ToolsVersionStatus -ObjectType VirtualMachine -ValueFromExt
 Get-VM | select Name,VMHost,@{l='Cluster';e={Get-VMHost $_.VMHost | Get-Cluster}},Guest,PowerState,NumCpu,MemoryMB,UsedSpaceGB,ProvisionedSpaceGB,Version,ToolsVersion,ToolsVersionStatus,@{l='SyncTimeWithHost';e={($_ | Get-View).Config.Tools.syncTimeWithHost}},@{l='ToolsUpgradePolicy';e={($_ | Get-View).Config.Tools.ToolsUpgradePolicy}},Notes
 ```
 
-### List Datastores by Summary, Multiple Hosts
+### List Datastores Summary
 ```
 Get-Datastore | select Name,Datacenter,Type,State,Accessible,FreeSpaceMB,CapacityGB,FileSystemVersion
+```
 
+### List Datastores with Multiple Hosts
+```
 Get-Datastore | where {$_.ExtensionData.Host.Count -gt 1} | select Name,CapacityGB,FreeSpaceGB,@{l='HostCount';e={$_.ExtensionData.Host.Count}}
 ```
 

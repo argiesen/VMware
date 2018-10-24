@@ -15,11 +15,13 @@ $global:DefaultVIServer | select Name,Version,Build
 ```
 Get-Cluster | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Hosts';e={($_ | Get-VMHost).Count}},vSanEnabled,HAEnabled,HAFailoverLevel,HAAdmissionControlEnabled,DrsEnabled,DrsAutomationLevel,EVCMode
 
+$ClusterResources = @()
 $Clusters = Get-Cluster
 foreach ($Cluster in $Clusters){
 	$Hosts = Get-Cluster $Cluster | Get-VMHost
-	"" | select @{l='Name';e={$Cluster.Name}},@{l='NumHosts';e={$Hosts.Count}},@{l='NumCpu';e={($Hosts | Measure-Object -Property NumCpu -Sum).Sum}},@{l='CpuUsageMhz';e={($Hosts | Measure-Object -Property CpuUsageMhz -Sum).Sum}},@{l='CpuTotalMhz';e={($Hosts | Measure-Object -Property CpuTotalMhz -Sum).Sum}},@{l='MemoryUsageGB';e={($Hosts | Measure-Object -Property MemoryUsageGB -Sum).Sum}},@{l='MemoryTotalGB';e={($Hosts | Measure-Object -Property MemoryTotalGB -Sum).Sum}}
+	$ClusterResources += "" | select @{l='Name';e={$Cluster.Name}},@{l='NumHosts';e={$Hosts.Count}},@{l='NumCpu';e={($Hosts | Measure-Object -Property NumCpu -Sum).Sum}},@{l='CpuUsageMhz';e={($Hosts | Measure-Object -Property CpuUsageMhz -Sum).Sum}},@{l='CpuTotalMhz';e={($Hosts | Measure-Object -Property CpuTotalMhz -Sum).Sum}},@{l='MemoryUsageGB';e={($Hosts | Measure-Object -Property MemoryUsageGB -Sum).Sum}},@{l='MemoryTotalGB';e={($Hosts | Measure-Object -Property MemoryTotalGB -Sum).Sum}}
 }
+$ClusterResources
 ```
 
 ### List Hosts

@@ -29,7 +29,7 @@ $ClusterResources
 
 ### List Hosts
 ```
-Get-VMHost | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Cluster';e={$_.Parent}},Manufacturer,Model,@{l='SerialNumber';e={($_ | Get-VMHostHardware).SerialNumber}},@{l='BiosVersion';e={($_ | Get-VMHostHardware).BiosVersion}},@{l='CpuModel';e={($_ | Get-VMHostHardware).CpuModel}},HyperthreadingActive,CpuUsageMhz,CpuTotalMhz,MemoryUsageGB,MemoryTotalGB,@{l='NicCount';e={($_ | Get-VMHostHardware).NicCount}},@{l='IPAddress';e={($_ | Get-VMHostNetworkAdapter | where ManagementTrafficEnabled -eq $true).IP}},@{l='NumberOfVM';e={($_ | Get-VM).Count}},Version,Build,MaxEVCMode,IsStandalone,@{l='SSH';e={($_ | Get-VMHostService | where {$_.Key -eq "TSM-SSH"}).Running}},@{Name="HostTime";Expression={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}}
+Get-VMHost | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Cluster';e={$_.Parent}},Manufacturer,Model,@{l='SerialNumber';e={($_ | Get-VMHostHardware).SerialNumber}},@{l='BiosVersion';e={($_ | Get-VMHostHardware).BiosVersion}},@{l='CpuModel';e={($_ | Get-VMHostHardware).CpuModel}},@{l='CpuSocket';e={($_ | Get-VMHostHardware).CpuCount}},@{l='CpuCore';e={($_ | Get-VMHostHardware).CpuCoreCountTotal}},HyperthreadingActive,CpuUsageMhz,CpuTotalMhz,MemoryUsageGB,MemoryTotalGB,@{l='NicCount';e={($_ | Get-VMHostHardware).NicCount}},@{l='IPAddress';e={($_ | Get-VMHostNetworkAdapter | where ManagementTrafficEnabled -eq $true).IP}},@{l='NumberOfVM';e={($_ | Get-VM).Count}},Version,Build,MaxEVCMode,IsStandalone,@{l='SSH';e={($_ | Get-VMHostService | where {$_.Key -eq "TSM-SSH"}).Running}},@{Name="HostTime";Expression={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}}
 ```
 
 ### List VMs
@@ -38,6 +38,15 @@ New-VIProperty -Name ToolsVersion -ObjectType VirtualMachine -ValueFromExtension
 New-VIProperty -Name ToolsVersionStatus -ObjectType VirtualMachine -ValueFromExtensionProperty 'Guest.ToolsVersionStatus' -Force | Out-Null
 
 Get-VM | select Name,VMHost,@{l='Cluster';e={Get-VMHost $_.VMHost | Get-Cluster}},Guest,PowerState,NumCpu,MemoryMB,UsedSpaceGB,ProvisionedSpaceGB,Version,ToolsVersion,ToolsVersionStatus,@{l='SyncTimeWithHost';e={($_ | Get-View).Config.Tools.syncTimeWithHost}},@{l='ToolsUpgradePolicy';e={($_ | Get-View).Config.Tools.ToolsUpgradePolicy}},Notes
+```
+
+### Evaluate VM resources
+```
+#Count VMs by vCPUs
+"" | select @{l='8+';e={(Get-VM | where NumCpu -gt 8).Count}},@{l='4-8';e={(Get-VM | where {$_.NumCpu -le 8 -and $_.NumCpu -ge 4}).Count}},@{l='3';e={(Get-VM | where NumCpu -eq 3).Count}},@{l='2';e={(Get-VM | where NumCpu -eq 2).Count}},@{l='1';e={(Get-VM | where NumCpu -eq 1).Count}}
+
+#Find VMs with more vCPU than cores on socket
+Get-VM | where {$_.NumCpu -gt (($_ | Get-VMHost).NumCpu/($_ | Get-VMHost | Get-View).Hardware.CpuInfo.NumCpuPackages)}
 ```
 
 ### List Datastores Summary

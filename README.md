@@ -6,6 +6,21 @@ Connect-VIServer server.domain.local -Credential (Get-Credential)
 $global:DefaultVIServer | select Name,Version,Build
 ```
 
+### List license summary
+```
+$licenseTable = @()
+$licenses = $LicenseManager.Licenses | select Name -Unique
+foreach ($license in $licenses){
+	$licenseOut = "" | select Name,Used,Total
+	$licenseOut.Name = $license.Name
+	$licenseOut.Used = ($LicenseManager.Licenses | where Name -eq $license.Name | Measure-Object -Property Used -Sum).Sum
+	$licenseOut.Total = ($LicenseManager.Licenses | where Name -eq $license.Name | Measure-Object -Property Total -Sum).Sum
+	$licenseTable += $licenseOut
+}
+
+$licenseTable | Sort-Object -Property Name | ft -AutoSize
+```
+
 ### Get object counts
 ```
 "" | select @{l='DatacenterCount';e={(Get-Datacenter).Count}},@{l='ClusterCount';e={(Get-Cluster).Count}},@{l='HostCount';e={(Get-VMHost).Count}},@{l='VMCount';e={(Get-VM).Count}}
@@ -101,21 +116,6 @@ Get-VMHost | Where-Object {$_.ConnectionState -eq "Connected"} |
 }
 
 $result | ft -AutoSize
-```
-
-### List license summary
-```
-$licenseTable = @()
-$licenses = $LicenseManager.Licenses | select Name -Unique
-foreach ($license in $licenses){
-	$licenseOut = "" | select Name,Used,Total
-	$licenseOut.Name = $license.Name
-	$licenseOut.Used = ($LicenseManager.Licenses | where Name -eq $license.Name | Measure-Object -Property Used -Sum).Sum
-	$licenseOut.Total = ($LicenseManager.Licenses | where Name -eq $license.Name | Measure-Object -Property Total -Sum).Sum
-	$licenseTable += $licenseOut
-}
-
-$licenseTable | Sort-Object -Property Name | ft -AutoSize
 ```
 
 ### Get SSO site name

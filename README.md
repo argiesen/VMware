@@ -22,6 +22,23 @@ foreach ($license in $licenses){
 $licenseTable | Sort-Object -Property Name | ft -AutoSize
 ```
 
+##List license details
+```
+$LicenseManager = Get-View LicenseManager
+$LicenseAssignmentManager = Get-View $LicenseManager.LicenseAssignmentManager
+
+Get-View -ViewType HostSystem | select Name,
+@{N='Cluster';E={$parent = Get-View -Id $_.Parent -Property Name,Parent
+	While ($parent -isnot [VMware.Vim.ClusterComputeResource] -and $parent.Parent){
+		$parent = Get-View -Id $parent.Parent -Property Name,Parent
+	}
+	if($parent -is [VMware.Vim.ClusterComputeResource]){$parent.Name}}
+},
+@{N='Product';E={$_.Config.Product.FullName}},
+@{N='LicenseType';E={$script:licInfo = $LicenseAssignmentManager.GetType().GetMethod("QueryAssignedLicenses").Invoke($LicenseAssignmentManager,@($_.MoRef.Value))
+$Script:licInfo.AssignedLicense.Name}}
+```
+
 ### Get object counts
 ```
 "" | select @{l='DatacenterCount';e={(Get-Datacenter).Count}},@{l='ClusterCount';e={(Get-Cluster).Count}},@{l='HostCount';e={(Get-VMHost).Count}},@{l='VMCount';e={(Get-VM).Count}}

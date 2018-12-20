@@ -11,12 +11,12 @@ $global:DefaultVIServer | select Name,Version,Build
 "" | select @{l='DatacenterCount';e={(Get-Datacenter).Count}},@{l='ClusterCount';e={(Get-Cluster).Count}},@{l='HostCount';e={(Get-VMHost).Count}},@{l='VMCount';e={(Get-VM).Count}}
 ```
 
-### List Cluster Features
+### List cluster features
 ```
 Get-Cluster | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Hosts';e={($_ | Get-VMHost).Count}},vSanEnabled,HAEnabled,HAFailoverLevel,HAAdmissionControlEnabled,DrsEnabled,DrsAutomationLevel,EVCMode
 ```
 
-### List Cluster Resources
+### List cluster resources
 ```
 $ClusterResources = @()
 $Clusters = Get-Cluster
@@ -27,7 +27,7 @@ foreach ($Cluster in $Clusters){
 $ClusterResources
 ```
 
-### List Hosts
+### List hosts
 ```
 Get-VMHost | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Cluster';e={$_.Parent}},Manufacturer,Model,@{l='SerialNumber';e={($_ | Get-VMHostHardware).SerialNumber}},@{l='BiosVersion';e={($_ | Get-VMHostHardware).BiosVersion}},@{l='CpuModel';e={($_ | Get-VMHostHardware).CpuModel}},@{l='CpuSocket';e={($_ | Get-VMHostHardware).CpuCount}},@{l='CpuCore';e={($_ | Get-VMHostHardware).CpuCoreCountTotal}},HyperthreadingActive,CpuUsageMhz,CpuTotalMhz,MemoryUsageGB,MemoryTotalGB,@{l='PsuCount';e={($_ | Get-VMHostHardware).PowerSupplies.Count}},@{l='NicCount';e={($_ | Get-VMHostHardware).NicCount}},@{l='IPAddress';e={($_ | Get-VMHostNetworkAdapter | where ManagementTrafficEnabled -eq $true).IP}},@{l='NumberOfVM';e={($_ | Get-VM).Count}},Version,Build,MaxEVCMode,IsStandalone,@{l='SSH';e={($_ | Get-VMHostService | where {$_.Key -eq "TSM-SSH"}).Running}},@{Name="HostTime";Expression={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}}
 ```
@@ -49,12 +49,12 @@ Get-VM | select Name,VMHost,@{l='Cluster';e={Get-VMHost $_.VMHost | Get-Cluster}
 Get-VM | where {$_.NumCpu -gt (($_ | Get-VMHost).NumCpu/($_ | Get-VMHost | Get-View).Hardware.CpuInfo.NumCpuPackages)}
 ```
 
-### List Datastores Summary
+### List datastores summary
 ```
 Get-Datastore | select Name,Datacenter,Type,State,Accessible,FreeSpaceMB,CapacityGB,FileSystemVersion
 ```
 
-### List Datastores with Multiple Hosts
+### List datastores with multiple hosts
 ```
 Get-Datastore | where {$_.ExtensionData.Host.Count -gt 1} | select Name,CapacityGB,FreeSpaceGB,@{l='HostCount';e={$_.ExtensionData.Host.Count}}
 ```
@@ -76,7 +76,7 @@ Get-VMHost | select Name,@{l='Time';e={(Get-View $_.ExtensionData.configManager.
 Get-VMHost | foreach {(Get-View $_.ExtensionData.configManager.DateTimeSystem).UpdateDateTime((Get-Date -format u))}
 ```
 
-### CDP Network Info
+### CDP network info
 ```
 $result = @()
 Get-VMHost | Where-Object {$_.ConnectionState -eq "Connected"} |
@@ -103,7 +103,7 @@ Get-VMHost | Where-Object {$_.ConnectionState -eq "Connected"} |
 $result | ft -AutoSize
 ```
 
-### Get SSO Site Name
+### Get SSO site name
 https://www.virtuallyghetto.com/2015/04/vcenter-server-6-0-tidbits-part-2-what-is-my-sso-domain-name-site-name.html
 
 ### Check HCL

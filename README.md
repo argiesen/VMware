@@ -9,6 +9,7 @@ $global:DefaultVIServer | select Name,Version,Build
 ### List license summary
 ```
 $licenseTable = @()
+$LicenseManager = Get-View LicenseManager
 $licenses = $LicenseManager.Licenses | select Name -Unique
 foreach ($license in $licenses){
 	$licenseOut = "" | select Name,Used,Total

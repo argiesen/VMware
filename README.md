@@ -103,6 +103,21 @@ Get-VMHost | Where-Object {$_.ConnectionState -eq "Connected"} |
 $result | ft -AutoSize
 ```
 
+### List license summary
+```
+$licenseTable = @()
+$licenses = $LicenseManager.Licenses | select Name -Unique
+foreach ($license in $licenses){
+	$licenseOut = "" | select Name,Used,Total
+	$licenseOut.Name = $license.Name
+	$licenseOut.Used = ($LicenseManager.Licenses | where Name -eq $license.Name | Measure-Object -Property Used -Sum).Sum
+	$licenseOut.Total = ($LicenseManager.Licenses | where Name -eq $license.Name | Measure-Object -Property Total -Sum).Sum
+	$licenseTable += $licenseOut
+}
+
+$licenseTable | Sort-Object -Property Name | ft -AutoSize
+```
+
 ### Get SSO site name
 https://www.virtuallyghetto.com/2015/04/vcenter-server-6-0-tidbits-part-2-what-is-my-sso-domain-name-site-name.html
 

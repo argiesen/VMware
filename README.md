@@ -103,3 +103,32 @@ foreach ($v in (Get-VM)) {
 	$vm.ReconfigVM($vmConfigSpec)
 }
 ```
+
+### CDP Network Info
+```
+$result = @()
+Get-VMHost | Where-Object {$_.ConnectionState -eq "Connected"} |
+	%{Get-View $_.ID} |
+	%{$esxname = $_.Name; Get-View $_.ConfigManager.NetworkSystem} |
+	%{foreach($physnic in $_.NetworkInfo.Pnic){
+		$pnicInfo = $_.QueryNetworkHint($physnic.Device)
+		foreach($hint in $pnicInfo){
+			#Write-Host $esxname $physnic.Device
+			if($hint.ConnectedSwitchPort){
+				$output = $hint.ConnectedSwitchPort | select Host,Pnic,DevId,Address,HardwarePlatform,PortId,SoftwareVersion,Location
+				$output.Host = $esxname
+				$output.Pnic = $physnic.Device
+				$result += $output
+			}else{
+				#Write-Host "No CDP information available."; Write-Host
+				$output = "" | select Host,Pnic,DevId,Address,HardwarePlatform,PortId,SoftwareVersion,Location
+				$output.Host = $esxname
+				$output.Pnic = $physnic.Device
+				$output.DevId = "No CDP"
+			}
+		}
+	}
+}
+
+$result | ft -AutoSize
+```

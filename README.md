@@ -22,7 +22,7 @@ foreach ($license in $licenses){
 $licenseTable | Sort-Object -Property Name | ft -AutoSize
 ```
 
-##List license details
+### List license details
 ```
 $LicenseManager = Get-View LicenseManager
 $LicenseAssignmentManager = Get-View $LicenseManager.LicenseAssignmentManager

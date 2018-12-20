@@ -76,6 +76,33 @@ Get-VMHost | select Name,@{l='Time';e={(Get-View $_.ExtensionData.configManager.
 Get-VMHost | foreach {(Get-View $_.ExtensionData.configManager.DateTimeSystem).UpdateDateTime((Get-Date -format u))}
 ```
 
+### CDP Network Info
+```
+$result = @()
+Get-VMHost | Where-Object {$_.ConnectionState -eq "Connected"} |
+	%{Get-View $_.ID} |
+	%{$esxname = $_.Name; Get-View $_.ConfigManager.NetworkSystem} |
+	%{foreach($physnic in $_.NetworkInfo.Pnic){
+		$pnicInfo = $_.QueryNetworkHint($physnic.Device)
+		foreach($hint in $pnicInfo){
+			if($hint.ConnectedSwitchPort){
+				$output = $hint.ConnectedSwitchPort | select Host,Pnic,DevId,Address,HardwarePlatform,PortId,SoftwareVersion,Location
+				$output.Host = $esxname
+				$output.Pnic = $physnic.Device
+			}else{
+				$output = "" | select Host,Pnic,DevId,Address,HardwarePlatform,PortId,SoftwareVersion,Location
+				$output.Host = $esxname
+				$output.Pnic = $physnic.Device
+				$output.DevId = "No CDP"
+			}
+			$result += $output
+		}
+	}
+}
+
+$result | ft -AutoSize
+```
+
 ### Get SSO Site Name
 https://www.virtuallyghetto.com/2015/04/vcenter-server-6-0-tidbits-part-2-what-is-my-sso-domain-name-site-name.html
 
@@ -102,31 +129,4 @@ foreach ($v in (Get-VM)) {
 	$vmConfigSpec.Tools.syncTimeWithHost = $false
 	$vm.ReconfigVM($vmConfigSpec)
 }
-```
-
-### CDP Network Info
-```
-$result = @()
-Get-VMHost | Where-Object {$_.ConnectionState -eq "Connected"} |
-	%{Get-View $_.ID} |
-	%{$esxname = $_.Name; Get-View $_.ConfigManager.NetworkSystem} |
-	%{foreach($physnic in $_.NetworkInfo.Pnic){
-		$pnicInfo = $_.QueryNetworkHint($physnic.Device)
-		foreach($hint in $pnicInfo){
-			if($hint.ConnectedSwitchPort){
-				$output = $hint.ConnectedSwitchPort | select Host,Pnic,DevId,Address,HardwarePlatform,PortId,SoftwareVersion,Location
-				$output.Host = $esxname
-				$output.Pnic = $physnic.Device
-			}else{
-				$output = "" | select Host,Pnic,DevId,Address,HardwarePlatform,PortId,SoftwareVersion,Location
-				$output.Host = $esxname
-				$output.Pnic = $physnic.Device
-				$output.DevId = "No CDP"
-			}
-			$result += $output
-		}
-	}
-}
-
-$result | ft -AutoSize
 ```

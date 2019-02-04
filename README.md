@@ -92,6 +92,11 @@ Get-Datastore | select Name,Datacenter,Type,State,Accessible,FreeSpaceMB,Capacit
 Get-Datastore | where {$_.ExtensionData.Host.Count -gt 1} | select Name,CapacityGB,FreeSpaceGB,@{l='HostCount';e={$_.ExtensionData.Host.Count}}
 ```
 
+### List vSAN clusters
+```
+Get-VsanClusterConfiguration | where VsanEnabled -eq $true | select Name,WitnessHost,SpaceEfficiencyEnabled,StretchedClusterEnabled,IscsiTargetServiceEnabled,EncryptionEnabled,PerformanceServiceEnabled,HealthCheckEnabled,TimeOfHclUpdate
+```
+
 ### List snapshots over 7 days old
 ```
 Get-VM | Get-Snapshot | where {$_.Created -lt (Get-Date).AddDays(-7)} | Select-Object VM,Name,Created,SizeMB,@{l='Datastore';e={(Get-VM $_.VM | Get-Datastore).Name}}

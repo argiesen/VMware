@@ -60,6 +60,18 @@ foreach ($Cluster in $Clusters){
 $ClusterResources
 ```
 
+### List cluster resources with VM consumption
+```
+$ClusterResources = @()
+$Clusters = Get-Cluster
+$VMs = Get-VM | select Name,VMHost,@{l='Cluster';e={Get-VMHost $_.VMHost | Get-Cluster}},Guest,PowerState,NumCpu,MemoryMB,UsedSpaceGB,ProvisionedSpaceGB
+foreach ($Cluster in $Clusters){
+	$Hosts = Get-Cluster $Cluster | Get-VMHost
+	$ClusterResources += "" | select @{l='Name';e={$Cluster.Name}},@{l='NumHosts';e={$Hosts.Count}},@{l='NumCpu';e={($Hosts | Measure-Object -Property NumCpu -Sum).Sum}},@{l='CpuUsageMhz';e={($Hosts | Measure-Object -Property CpuUsageMhz -Sum).Sum}},@{l='CpuTotalMhz';e={($Hosts | Measure-Object -Property CpuTotalMhz -Sum).Sum}},@{l='MemoryUsageGB';e={($Hosts | Measure-Object -Property MemoryUsageGB -Sum).Sum}},@{l='MemoryTotalGB';e={($Hosts | Measure-Object -Property MemoryTotalGB -Sum).Sum}},@{l='ProvisionedVCPU';e={($VMs | where Cluster -match $Cluster.Name | Measure-Object -Property NumCpu -Sum).Sum}},@{l='ProvisionedMemoryMB';e={($VMs | where Cluster -match $Cluster.Name | Measure-Object -Property MemoryMB -Sum).Sum}},@{l='ProvisionedSpaceGB';e={($VMs | where Cluster -match $Cluster.Name | Measure-Object -Property ProvisionedSpaceGB -Sum).Sum}}
+}
+$ClusterResources
+```
+
 ### List hosts
 ```
 Get-VMHost | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Cluster';e={$_.Parent}},Manufacturer,Model,@{l='SerialNumber';e={($_ | Get-VMHostHardware).SerialNumber}},@{l='BiosVersion';e={($_ | Get-VMHostHardware).BiosVersion}},@{l='CpuModel';e={($_ | Get-VMHostHardware).CpuModel}},@{l='CpuSocket';e={($_ | Get-VMHostHardware).CpuCount}},@{l='CpuCore';e={($_ | Get-VMHostHardware).CpuCoreCountTotal}},HyperthreadingActive,CpuUsageMhz,CpuTotalMhz,MemoryUsageGB,MemoryTotalGB,@{l='PsuCount';e={($_ | Get-VMHostHardware).PowerSupplies.Count}},@{l='NicCount';e={($_ | Get-VMHostHardware).NicCount}},@{l='IPAddress';e={($_ | Get-VMHostNetworkAdapter | where ManagementTrafficEnabled -eq $true).IP}},@{l='NumberOfVM';e={($_ | Get-VM).Count}},Version,Build,MaxEVCMode,IsStandalone,@{l='SSH';e={($_ | Get-VMHostService | where {$_.Key -eq "TSM-SSH"}).Running}},@{Name="HostTime";Expression={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}}

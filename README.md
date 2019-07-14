@@ -74,7 +74,7 @@ $ClusterResources
 
 ### List hosts
 ```
-Get-VMHost | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Cluster';e={$_.Parent}},Manufacturer,Model,@{l='SerialNumber';e={($_ | Get-VMHostHardware).SerialNumber}},@{l='BiosVersion';e={($_ | Get-VMHostHardware).BiosVersion}},@{l='CpuModel';e={($_ | Get-VMHostHardware).CpuModel}},@{l='CpuSocket';e={($_ | Get-VMHostHardware).CpuCount}},@{l='CpuCore';e={($_ | Get-VMHostHardware).CpuCoreCountTotal}},HyperthreadingActive,CpuUsageMhz,CpuTotalMhz,MemoryUsageGB,MemoryTotalGB,@{l='PsuCount';e={($_ | Get-VMHostHardware).PowerSupplies.Count}},@{l='NicCount';e={($_ | Get-VMHostHardware).NicCount}},@{l='IPAddress';e={($_ | Get-VMHostNetworkAdapter | where ManagementTrafficEnabled -eq $true).IP}},@{l='NumberOfVM';e={($_ | Get-VM).Count}},Version,Build,MaxEVCMode,@{l='hyperthreadingMitigation';e={(Get-AdvancedSetting $_ -Name VMkernel.Boot.hyperthreadingMitigation).Value}},@{l='hyperthreadingMitigationIntraVM';e={(Get-AdvancedSetting $_ -Name VMkernel.Boot.hyperthreadingMitigationIntraVM).Value}},IsStandalone,@{l='SSH';e={($_ | Get-VMHostService | where {$_.Key -eq "TSM-SSH"}).Running}},@{Name="HostTime";Expression={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}}
+Get-VMHost | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Cluster';e={$_.Parent}},Manufacturer,Model,@{l='SerialNumber';e={($_ | Get-VMHostHardware).SerialNumber}},@{l='BiosVersion';e={($_ | Get-VMHostHardware).BiosVersion}},@{l='CpuModel';e={($_ | Get-VMHostHardware).CpuModel}},@{l='CpuSocket';e={($_ | Get-VMHostHardware).CpuCount}},@{l='CpuCore';e={($_ | Get-VMHostHardware).CpuCoreCountTotal}},HyperthreadingActive,CpuUsageMhz,CpuTotalMhz,MemoryUsageGB,MemoryTotalGB,@{l='PsuCount';e={($_ | Get-VMHostHardware).PowerSupplies.Count}},@{l='NicCount';e={($_ | Get-VMHostHardware).NicCount}},@{l='IPAddress';e={($_ | Get-VMHostNetworkAdapter | where ManagementTrafficEnabled -eq $true).IP}},@{l='NumberOfVM';e={($_ | Get-VM).Count}},Version,Build,MaxEVCMode,@{l='hyperthreadingMitigation';e={(Get-AdvancedSetting $_ -Name VMkernel.Boot.hyperthreadingMitigation).Value}},@{l='hyperthreadingMitigationIntraVM';e={(Get-AdvancedSetting $_ -Name VMkernel.Boot.hyperthreadingMitigationIntraVM).Value}},IsStandalone,@{l='SSH';e={($_ | Get-VMHostService | where {$_.Key -eq "TSM-SSH"}).Running}},@{Name="HostTime";Expression={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}} | sort Name
 ```
 
 ### List VMs
@@ -96,7 +96,7 @@ Get-VM | where {$_.NumCpu -gt (($_ | Get-VMHost).NumCpu/($_ | Get-VMHost | Get-V
 
 ### List datastores summary
 ```
-Get-Datastore | select Name,Datacenter,Type,State,FreeSpaceMB,@{l='FreeSpaceGB';e={[math]::round($_.FreeSpaceMB / 1024, 2)}},@{l='CapacityMB';e={[math]::round($_.CapacityGB * 1024, 0)}},CapacityGB,FileSystemVersion
+Get-Datastore | select Name,Datacenter,Type,State,FreeSpaceMB,@{l='FreeSpaceGB';e={[math]::round($_.FreeSpaceMB / 1024, 2)}},@{l='CapacityMB';e={[math]::round($_.CapacityGB * 1024, 0)}},CapacityGB,FileSystemVersion | sort Name
 ```
 
 ### List datastores with multiple hosts
@@ -111,7 +111,7 @@ Get-VsanClusterConfiguration | where VsanEnabled -eq $true | select Name,Witness
 
 ### List snapshots over 7 days old
 ```
-Get-VM | Get-Snapshot | where {$_.Created -lt (Get-Date).AddDays(-7)} | Select-Object VM,Name,Created,@{l='SizeMB';e={[math]::round($_.SizeMB * 1, 0)}},@{l='Datastore';e={(Get-VM $_.VM | Get-Datastore).Name}} | Sort-Object -Property VM
+Get-VM | Get-Snapshot | where {$_.Created -lt (Get-Date).AddDays(-7)} | Select-Object VM,Name,Created,@{l='SizeMB';e={[math]::round($_.SizeMB * 1, 0)}},@{l='Datastore';e={(Get-VM $_.VM | Get-Datastore).Name}} | sort VM
 ```
 
 ### Get NTP configuration and host time

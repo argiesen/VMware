@@ -46,7 +46,7 @@ $Script:licInfo.AssignedLicense.Name}}
 
 ### List cluster features
 ```
-Get-Cluster | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Hosts';e={($_ | Get-VMHost).Count}},vSanEnabled,HAEnabled,HAFailoverLevel,HAAdmissionControlEnabled,DrsEnabled,DrsAutomationLevel,EVCMode | sort Name
+Get-Cluster | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Hosts';e={($_ | Get-VMHost).Count}},vSanEnabled,HAEnabled,HAFailoverLevel,HAAdmissionControlEnabled,HAIsolationResponse,DrsEnabled,DrsAutomationLevel,EVCMode | sort Name
 ```
 
 ### List cluster resources

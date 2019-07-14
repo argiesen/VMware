@@ -19,7 +19,7 @@ foreach ($license in $licenses){
 	$licenseTable += $licenseOut
 }
 
-$licenseTable | Sort-Object -Property Name | ft -AutoSize
+$licenseTable | sort Name | ft -AutoSize
 ```
 
 ### List license details
@@ -46,7 +46,7 @@ $Script:licInfo.AssignedLicense.Name}}
 
 ### List cluster features
 ```
-Get-Cluster | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Hosts';e={($_ | Get-VMHost).Count}},vSanEnabled,HAEnabled,HAFailoverLevel,HAAdmissionControlEnabled,DrsEnabled,DrsAutomationLevel,EVCMode
+Get-Cluster | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Hosts';e={($_ | Get-VMHost).Count}},vSanEnabled,HAEnabled,HAFailoverLevel,HAAdmissionControlEnabled,DrsEnabled,DrsAutomationLevel,EVCMode | sort Name
 ```
 
 ### List cluster resources
@@ -57,7 +57,7 @@ foreach ($Cluster in $Clusters){
 	$Hosts = Get-Cluster $Cluster | Get-VMHost
 	$ClusterResources += "" | select @{l='Name';e={$Cluster.Name}},@{l='NumHosts';e={$Hosts.Count}},@{l='NumCpu';e={($Hosts | Measure-Object -Property NumCpu -Sum).Sum}},@{l='CpuUsageMhz';e={($Hosts | Measure-Object -Property CpuUsageMhz -Sum).Sum}},@{l='CpuTotalMhz';e={($Hosts | Measure-Object -Property CpuTotalMhz -Sum).Sum}},@{l='MemoryUsageGB';e={($Hosts | Measure-Object -Property MemoryUsageGB -Sum).Sum}},@{l='MemoryTotalGB';e={($Hosts | Measure-Object -Property MemoryTotalGB -Sum).Sum}}
 }
-$ClusterResources
+$ClusterResources | sort Name
 ```
 
 ### List cluster resources with VM consumption
@@ -69,7 +69,7 @@ foreach ($Cluster in $Clusters){
 	$Hosts = Get-Cluster $Cluster | Get-VMHost
 	$ClusterResources += "" | select @{l='Name';e={$Cluster.Name}},@{l='NumHost';e={$Hosts.Count}},@{l='NumVm';e={($VMs | where Cluster -match $Cluster.Name).Count}},@{l='NumCpu';e={($Hosts | Measure-Object -Property NumCpu -Sum).Sum}},@{l='CpuUsageMhz';e={($Hosts | Measure-Object -Property CpuUsageMhz -Sum).Sum}},@{l='CpuTotalMhz';e={($Hosts | Measure-Object -Property CpuTotalMhz -Sum).Sum}},@{l='MemoryUsageGB';e={($Hosts | Measure-Object -Property MemoryUsageGB -Sum).Sum}},@{l='MemoryTotalGB';e={($Hosts | Measure-Object -Property MemoryTotalGB -Sum).Sum}},@{l='ProvisionedVcpu';e={($VMs | where PowerState -eq "PoweredOn" | where Cluster -match $Cluster.Name | Measure-Object -Property NumCpu -Sum).Sum}},@{l='ProvisionedMemoryMB';e={($VMs | where PowerState -eq "PoweredOn" | where Cluster -match $Cluster.Name | Measure-Object -Property MemoryMB -Sum).Sum}},@{l='ProvisionedSpaceGB';e={($VMs | where Cluster -match $Cluster.Name | Measure-Object -Property ProvisionedSpaceGB -Sum).Sum}}
 }
-$ClusterResources
+$ClusterResources | sort Name
 ```
 
 ### List hosts
@@ -91,7 +91,7 @@ Get-VM | select Name,VMHost,@{l='Cluster';e={Get-VMHost $_.VMHost | Get-Cluster}
 "" | select @{l='8+';e={(Get-VM | where NumCpu -gt 8).Count}},@{l='4-8';e={(Get-VM | where {$_.NumCpu -le 8 -and $_.NumCpu -ge 4}).Count}},@{l='3';e={(Get-VM | where NumCpu -eq 3).Count}},@{l='2';e={(Get-VM | where NumCpu -eq 2).Count}},@{l='1';e={(Get-VM | where NumCpu -eq 1).Count}}
 
 #Find VMs with more vCPU than cores on socket
-Get-VM | where {$_.NumCpu -gt (($_ | Get-VMHost).NumCpu/($_ | Get-VMHost | Get-View).Hardware.CpuInfo.NumCpuPackages)}
+Get-VM | where {$_.NumCpu -gt (($_ | Get-VMHost).NumCpu/($_ | Get-VMHost | Get-View).Hardware.CpuInfo.NumCpuPackages)} | sort Name
 ```
 
 ### List datastores summary
@@ -101,12 +101,12 @@ Get-Datastore | select Name,Datacenter,Type,State,FreeSpaceMB,@{l='FreeSpaceGB';
 
 ### List datastores with multiple hosts
 ```
-Get-Datastore | where {$_.ExtensionData.Host.Count -gt 1} | select Name,CapacityGB,FreeSpaceGB,@{l='HostCount';e={$_.ExtensionData.Host.Count}}
+Get-Datastore | where {$_.ExtensionData.Host.Count -gt 1} | select Name,CapacityGB,FreeSpaceGB,@{l='HostCount';e={$_.ExtensionData.Host.Count}} | sort Name
 ```
 
 ### List vSAN clusters
 ```
-Get-VsanClusterConfiguration | where VsanEnabled -eq $true | select Name,WitnessHost,SpaceEfficiencyEnabled,StretchedClusterEnabled,IscsiTargetServiceEnabled,EncryptionEnabled,PerformanceServiceEnabled,HealthCheckEnabled,TimeOfHclUpdate
+Get-VsanClusterConfiguration | where VsanEnabled -eq $true | select Name,WitnessHost,SpaceEfficiencyEnabled,StretchedClusterEnabled,IscsiTargetServiceEnabled,EncryptionEnabled,PerformanceServiceEnabled,HealthCheckEnabled,TimeOfHclUpdate | sort Name
 ```
 
 ### List snapshots over 7 days old
@@ -118,7 +118,7 @@ Get-VM | Get-Snapshot | where {$_.Created -lt (Get-Date).AddDays(-7)} | Select-O
 ```
 Get-VMHost | select Name,@{l='NTPServer';e={$_ | Get-VMHostNtpServer}},@{l='Policy';e={($_ | Get-VMHostService | where {$_.Key -eq "ntpd"}).Policy}},@{l='Running';e={($_ | Get-VMHostService | where {$_.Key -eq "ntpd"}).Running}}
 
-Get-VMHost | select Name,@{l='Time';e={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}}
+Get-VMHost | select Name,@{l='Time';e={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}} | sort Name
 ```
 
 ### Set host time to match local machine

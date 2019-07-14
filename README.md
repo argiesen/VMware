@@ -101,7 +101,7 @@ Get-Datastore | select Name,Datacenter,Type,State,FreeSpaceMB,@{l='FreeSpaceGB';
 
 ### List datastores with multiple hosts
 ```
-Get-Datastore | where {$_.ExtensionData.Host.Count -gt 1} | select Name,CapacityGB,FreeSpaceGB,@{l='HostCount';e={$_.ExtensionData.Host.Count}} | sort Name
+Get-Datastore | where {$_.ExtensionData.Host.Count -gt 1} | select Name,FreeSpaceGB,CapacityGB,@{l='HostCount';e={$_.ExtensionData.Host.Count}} | sort Name
 ```
 
 ### List vSAN clusters

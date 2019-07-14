@@ -96,7 +96,7 @@ Get-VM | where {$_.NumCpu -gt (($_ | Get-VMHost).NumCpu/($_ | Get-VMHost | Get-V
 
 ### List datastores summary
 ```
-Get-Datastore | select Name,Datacenter,Type,State,FreeSpaceMB,CapacityGB,FileSystemVersion
+Get-Datastore | select Name,Datacenter,Type,State,FreeSpaceMB,@{l='FreeSpaceGB';e={[math]::round($_.FreeSpaceMB / 1024, 2)}},@{l='CapacityMB';e={[math]::round($_.CapacityGB * 1024, 0)}},CapacityGB,FileSystemVersion
 ```
 
 ### List datastores with multiple hosts

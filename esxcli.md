@@ -1,4 +1,6 @@
 ### Data Collection
+https://kb.vmware.com/s/article/1027206
+
 ```
 # vmware -v
 VMware ESXi 6.5.0 build-8294253

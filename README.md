@@ -124,6 +124,16 @@ Get-Datastore | where {$_.ExtensionData.Host.Count -gt 1} | select Name,FreeSpac
 Get-VsanClusterConfiguration | where VsanEnabled -eq $true | select Name,WitnessHost,SpaceEfficiencyEnabled,StretchedClusterEnabled,IscsiTargetServiceEnabled,EncryptionEnabled,PerformanceServiceEnabled,HealthCheckEnabled,TimeOfHclUpdate | sort Name
 ```
 
+### List vSAN datastore space
+```
+Get-VsanClusterConfiguration | where VsanEnabled -eq $true | Get-VsanSpaceUsage
+```
+
+### List vSAN disk groups (type, version)
+```
+Get-VsanDiskGroup | select VMHost,DiskGroupType,DiskFormatVersion
+```
+
 ### List snapshots over 7 days old
 ```
 Get-VM | Get-Snapshot | where {$_.Created -lt (Get-Date).AddDays(-7)} | Select-Object VM,Name,Created,@{l='SizeMB';e={[math]::round($_.SizeMB * 1, 0)}},@{l='Datastore';e={(Get-VM $_.VM | Get-Datastore).Name}} | sort VM

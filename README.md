@@ -87,6 +87,11 @@ $ClusterResources | sort Name
 Get-VMHost | select Name,@{l='Datacenter';e={$_ | Get-Datacenter}},@{l='Cluster';e={$_.Parent}},Manufacturer,Model,@{l='SerialNumber';e={($_ | Get-VMHostHardware).SerialNumber}},@{l='BiosVersion';e={($_ | Get-VMHostHardware).BiosVersion}},@{l='CpuModel';e={($_ | Get-VMHostHardware).CpuModel}},@{l='CpuSocket';e={($_ | Get-VMHostHardware).CpuCount}},@{l='CpuCore';e={($_ | Get-VMHostHardware).CpuCoreCountTotal}},HyperthreadingActive,CpuUsageMhz,CpuTotalMhz,MemoryUsageGB,MemoryTotalGB,@{l='PsuCount';e={($_ | Get-VMHostHardware).PowerSupplies.Count}},@{l='NicCount';e={($_ | Get-VMHostHardware).NicCount}},@{l='IPAddress';e={($_ | Get-VMHostNetworkAdapter | where ManagementTrafficEnabled -eq $true).IP}},@{l='NumberOfVM';e={($_ | Get-VM).Count}},Version,Build,MaxEVCMode,@{l='hyperthreadingMitigation';e={(Get-AdvancedSetting $_ -Name VMkernel.Boot.hyperthreadingMitigation).Value}},@{l='hyperthreadingMitigationIntraVM';e={(Get-AdvancedSetting $_ -Name VMkernel.Boot.hyperthreadingMitigationIntraVM).Value}},@{l="PowerPolicy";e={$_.ExtensionData.config.PowerSystemInfo.CurrentPolicy.ShortName}},IsStandalone,@{l='SSH';e={($_ | Get-VMHostService | where {$_.Key -eq "TSM-SSH"}).Running}},@{l="HostTime";e={(Get-View $_.ExtensionData.configManager.DateTimeSystem).QueryDateTime()}} | sort Name
 ```
 
+### List host devices
+```
+https://www.virtuallyghetto.com/2015/05/extracting-vid-did-svid-from-pci-devices-in-esxi-using-vsphere-api.html
+```
+
 ### List VMs
 ```
 New-VIProperty -Name ToolsVersion -ObjectType VirtualMachine -ValueFromExtensionProperty 'Config.tools.ToolsVersion' -Force | Out-Null

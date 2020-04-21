@@ -134,9 +134,9 @@ Get-VsanClusterConfiguration | where VsanEnabled -eq $true | Get-VsanSpaceUsage
 Get-VsanDiskGroup | select VMHost,DiskGroupType,DiskFormatVersion
 ```
 
-### List snapshots over 7 days old
+### List snapshots over 72 hours old
 ```
-Get-VM | Get-Snapshot | where {$_.Created -lt (Get-Date).AddDays(-7)} | Select-Object VM,Name,Created,@{l='SizeMB';e={[math]::round($_.SizeMB * 1, 0)}},@{l='Datastore';e={(Get-VM $_.VM | Get-Datastore).Name}} | sort VM
+Get-VM | Get-Snapshot | where {$_.Created -lt (Get-Date).AddDays(-3)} | Select-Object VM,Name,Created,@{l='SizeMB';e={[math]::round($_.SizeMB * 1, 0)}},@{l='Datastore';e={(Get-VM $_.VM | Get-Datastore).Name}} | sort VM
 ```
 
 ### Get NTP configuration and host time

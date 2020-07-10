@@ -172,7 +172,3 @@ function Provision-VM {
 }
 
 
-
-Provision-VM -VMName arg-hcs1 -NewName hcs1 -IPAddress 172.19.247.231 -SubnetMask 255.255.255.0 -DefaultGateway 172.19.247.1 -DnsServer1 172.19.247.20 -DnsServer2 172.19.247.21 -DomainName LabSpk.local -OUPath "OU=Servers,OU=LabSpk,DC=LabSpk,DC=local" -DomainUsername agiesen -DomainPassword "Cnet2020!@#" -GuestCredential $templateCred
-Provision-VM -VMName arg-hav1 -NewName hav1 -IPAddress 172.19.247.233 -SubnetMask 255.255.255.0 -DefaultGateway 172.19.247.1 -DnsServer1 172.19.247.20 -DnsServer2 172.19.247.21 -DomainName LabSpk.local -OUPath "OU=Servers,OU=LabSpk,DC=LabSpk,DC=local" -DomainUsername agiesen -DomainPassword "Cnet2020!@#" -GuestCredential $templateCred
-

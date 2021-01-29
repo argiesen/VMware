@@ -1,0 +1,50 @@
+function Add-VMDomain {
+	[cmdletbinding()]
+	param (
+		[parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true, Mandatory = $true)]
+		[ValidateNotNullOrEmpty()]
+		[string]$VMName,
+		[parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true, Mandatory = $true)]
+		[ValidateNotNullOrEmpty()]
+		[string]$DomainName,
+		[parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+		[alias("OU")]
+		[string]$OUPath,
+		[parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+		[string]$NewName,
+		[parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true, Mandatory = $true)]
+		[ValidateNotNullOrEmpty()]
+		[string]$DomainUsername,
+		[parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true, Mandatory = $true)]
+		[ValidateNotNullOrEmpty()]
+		[string]$DomainPassword,
+		[bool]$Restart = $true,
+		[PSCredential]$GuestCredential
+	)
+	
+	$joinDomain = '$ADJoinUsername = "ADDomain\ADUsername";
+				   $ADJoinPassword = ConvertTo-SecureString -String "ADPassword" -AsPlainText -Force;
+				   $ADJoinCredential = New-Object System.Management.Automation.PSCredential($ADJoinUsername,$ADJoinPassword);
+				   Add-Computer -DomainName ADDomain -NewName NewName -OUPath "ADOUPath" -Credential $ADJoinCredential -Force'
+			
+	$joinDomain = $joinDomain -replace 'ADUsername',$DomainUsername
+	$joinDomain = $joinDomain -replace 'ADPassword',$DomainPassword
+	$joinDomain = $joinDomain -replace 'ADDomain',$DomainName
+	if ($NewName){
+		$joinDomain = $joinDomain -replace 'NewGuestName',$NewName
+	}else{
+		$joinDomain = $joinDomain -replace ' -NewName NewGuestName',""
+	}
+	if ($OUPath){
+		$joinDomain = $joinDomain -replace 'ADOUPath',$OUPath
+	}else{
+		$joinDomain = $joinDomain -replace ' -OUPath "ADOUPath"',""
+	}
+	
+	Invoke-VMScript -VM $VMName -ScriptType PowerShell -ScriptText $joinDomain -GuestCredential $GuestCredential -Verbose
+	
+	if ($Restart){
+		Write-Host "Restarting VM $VMName"
+		Restart-VMGuest $VMName
+	}
+}

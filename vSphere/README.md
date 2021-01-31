@@ -1,4 +1,4 @@
-# vmwVMScripts
+# vmwScripts
 
 ### Get vCenter version
 ```

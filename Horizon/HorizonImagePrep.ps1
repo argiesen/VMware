@@ -30,8 +30,6 @@ param (
 	[parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
 	[bool]$AppVolumesManagerWritableVolumes = $false,
 	[parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
-	[string]$AdministratorPassword,
-	[parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
 	[bool]$SkipWindowsActivation = $false,
 	[bool]$AllowMAKActivation = $false
 )

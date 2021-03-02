@@ -245,6 +245,9 @@ $Indent = 1
 
 $AppVolumesAgentPath = (Get-Item $AppVolumesAgentPath).FullName
 
+Write-Log "Starting script ($(Get-Date -f "MM/dd/yy HH:mm:ss"))"
+Write-Log
+
 if ($ComputerName){
 	Write-Log "Renaming computer"
 	Rename-Computer -NewName $ComputerName

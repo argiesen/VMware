@@ -260,6 +260,18 @@ $LogPath = "HorizonBaseImage.log"
 $LogOutTo = "FileAndScreen"
 $Indent = 1
 
+#Get full file paths
+if ($HorizonAgentPath)			{$HorizonAgentPath = 			(Get-Item $HorizonAgentPath).FullName}
+if ($DEMAgentPath)				{$DEMAgentPath = 				(Get-Item $DEMAgentPath).FullName}
+if ($DEMLicensePath)			{$DEMLicensePath = 				(Get-Item $DEMLicensePath).FullName}
+if ($AppVolumesAgentPath)		{$AppVolumesAgentPath = 		(Get-Item $AppVolumesAgentPath).FullName}
+if ($FSLogixAgentPath)			{$FSLogixAgentPath = 			(Get-Item $FSLogixAgentPath).FullName}
+if ($RootCertificatePath)		{$RootCertificatePath = 		(Get-Item $RootCertificatePath).FullName}
+if ($VMwareOSOTPath)			{$VMwareOSOTPath = 				(Get-Item $VMwareOSOTPath).FullName}
+if ($VMwareOSOTSelectionPath)	{$VMwareOSOTSelectionPath = 	(Get-Item $VMwareOSOTSelectionPath).FullName}
+if ($OneDrivePath)				{$OneDrivePath = 				(Get-Item $OneDrivePath).FullName}
+if ($MSTeamsPath)				{$MSTeamsPath = 				(Get-Item $MSTeamsPath).FullName}
+
 Write-Log "Starting script ($(Get-Date -f "MM/dd/yy HH:mm:ss"))"
 Write-Log
 
@@ -350,5 +362,6 @@ if ($VMwareOSOTPath){
 	Write-Log "Running OSOT generalization..."
 	. $VMwareOSOTPath -generalize -reboot -v
 	
-	Write-Log "Reboot after OSOT generalization"
+	Write-Log "Rebooting after OSOT generalization"
+	Write-Log "Run OSOT Finalize tasks after reboot: . $VMwareOSOTPath -finalize all -v"
 }

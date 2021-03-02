@@ -239,7 +239,7 @@ function Install-Software {
 	}
 } # end function Install-Software
 
-$LogPath = "HorizonPackingImage.log"
+$LogPath = "HorizonPackageImage.log"
 $LogOutTo = "FileAndScreen"
 $Indent = 1
 

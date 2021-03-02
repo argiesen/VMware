@@ -256,7 +256,7 @@ function Install-Software {
 	}
 } # end function Install-Software
 
-$LogPath = "HorizonImagePrep.log"
+$LogPath = "HorizonBaseImage.log"
 $LogOutTo = "FileAndScreen"
 $Indent = 1
 

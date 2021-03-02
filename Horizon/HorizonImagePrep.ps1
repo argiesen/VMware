@@ -269,16 +269,8 @@ if ($RootCertificatePath){
 }
 
 if ($HorizonAgentPath){
-	<# if ($FeaturePerformanceTracker){
-		$args = "/s","/v","/qn","VDM_VC_MANAGED_AGENT=1","RDP_CHOICE=1","INSTALL_VDISPLAY_DRIVER=1",`
-		"ADDLOCAL=BlastUDP,Core,HelpDesk,NGVC,PerfTracker,PrintRedir,ClientDriveRedirection,RTAV,RDP,TSMMR,USB,V4V,VmwVaudio,VmwVdisplay,VmwVidd",`
-		"REBOOT=ReallySuppress"
-	}else{
-		$args = "/s","/v","/qn","VDM_VC_MANAGED_AGENT=1","RDP_CHOICE=1","INSTALL_VDISPLAY_DRIVER=1",`
-		"ADDLOCAL=BlastUDP,Core,HelpDesk,NGVC,PrintRedir,ClientDriveRedirection,RTAV,RDP,TSMMR,USB,V4V,VmwVaudio,VmwVdisplay,VmwVidd",`
-		"REBOOT=ReallySuppress"
-	} #>
-	
+	#Horizon Agent Features
+	#https://docs.vmware.com/en/VMware-Horizon/2012/virtual-desktops/GUID-3096DA8B-034B-435B-877E-5D2B18672A95.html
 	$HorizonAgentFeatures = "ADDLOCAL=BlastUDP,Core,HelpDesk,NGVC,PrintRedir,ClientDriveRedirection,RTAV,RDP,TSMMR,V4V,VmwVaudio,VmwVdisplay,VmwVidd"
 	
 	if ($FeatureUSBRedirection){
@@ -345,67 +337,18 @@ if ($AppVolumesAgentPath){
 		#https://kb.vmware.com/s/article/2128266
 		New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\services\svdriver\parameters" -Name "DriveLetterSettings" -PropertyType DWORD -Value "6" -Force -ErrorAction SilentlyContinue | Out-Null
 	}
-	
-	#Write-Log "Creating App Volumes custom policy folders at C:\Program Files (x86)\CloudVolumes\Agent\Config"
-	#$AppVolumesConfigPath = "C:\Program Files (x86)\CloudVolumes\Agent\Config"
-	#New-Item -Type Directory -Path "$AppVolumesConfigPath" -Name "Custom" | Out-Null
-	#New-Item -Type Directory -Path "$AppVolumesConfigPath\Custom" -Name "system" | Out-Null
-	#New-Item -Type Directory -Path "$AppVolumesConfigPath\Custom" -Name "provisioning" | Out-Null
-	#New-Item -Type Directory -Path "$AppVolumesConfigPath\Custom" -Name "app" | Out-Null
-	
-	#"exclude_uwv_file=%USERPROFILE%\AppData\Local\Microsoft\Edge\User Data\Default\Cache\\" | Out-File -Append -FilePath "$AppVolumesConfigPath\Default\snapvol.cfg"
 }
 
 if ($VMwareOSOTPath){
-	#Invoke-Item $VMwareOSOTPath
-	
 	Write-Log "Running OSOT optimization"
 	if ($VMwareOSOTSelectionPath){
 		. $VMwareOSOTPath -optimize -v -applyoptimization $VMwareOSOTSelectionPath
 	}else{
 		. $VMwareOSOTPath -optimize -v
 	}
-	#.\vmwareosoptimizationtool\VMwareOSOptimizationTool.exe -optimize -background "#000000" -v
-	#.\vmwareosoptimizationtool\VMwareOSOptimizationTool.exe -optimize -t "VMware Templates\Windows 10 and Server 2016 and later" -background "#000000"
-	
-	#Write-Log "Customizing default user"
-	#Write-Log "Mounting default user NTUSER.DAT" -Indent 2
-	#& REG LOAD HKLM\DefaultUser C:\Users\Default\NTUSER.DAT
-	
-	#if ($OneDrivePath){
-		#Write-Log "Re-enabling OneDrive" -Indent 2
-		#$regValue = "02,00,00,00,00,00,00,00,00,00,00,00"
-		#$hexified = $regValue.Split(',') | % { "0x$_"}
-		#Set-ItemProperty -Path "HKLM:\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" -Name "OneDrive" -Value ([byte[]]$hexified) -Force -ErrorAction SilentlyContinue | Out-Null
-		#Remove-ItemProperty -Path "HKLM:\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" -Name "OneDrive" -Force -ErrorAction SilentlyContinue | Out-Null
-		#New-ItemProperty -Path "HKLM:\DefaultUser\Software\Microsoft\CurrentVersion\Run" -Name "OneDrive" -PropertyType String -Value "\"C:\\Program Files (x86)\\Microsoft OneDrive\\OneDrive.exe\" /background"
-		#Remove-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Force -ErrorAction SilentlyContinue | Out-Null
-	#}
-	
-	#Write-Log "Enabling serialization" -Indent 2
-	#New-Item -Path "HKLM:\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "Serialize" -Force -ErrorAction SilentlyContinue | Out-Null
-	#New-ItemProperty -Path "HKLM:\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\Serialize" -Name "StartupDelayInMSec" -PropertyType DWORD -Value "0" -Force -ErrorAction SilentlyContinue | Out-Null
-	
-	#Write-Host "Press any key to continue..."
-	#$x = $host.ui.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-	
-	#Write-Log "Unmounting default user NTUSER.DAT" -Indent 2
-	#Start-Sleep -Seconds 5
-	#[gc]::Collect() # necessary call to be able to unload registry hive
-	#Start-Sleep -Seconds 5
-	#& REG UNLOAD HKLM\DefaultUser
-	
-	#Reboot recommended
-	#Write-Log "Rebooting machine"
-	#Restart-Computer -Force
 	
 	Write-Log "Running OSOT generalization..."
 	. $VMwareOSOTPath -generalize -reboot -v
 	
 	Write-Log "Reboot after OSOT generalization"
-	
-	#. $VMwareOSOTPath -finalize all -v
 }
-
-#Write-Log "Rebooting machine"
-#Restart-Computer -Force

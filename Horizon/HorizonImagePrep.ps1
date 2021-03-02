@@ -2,7 +2,9 @@
 param (
 	[parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
 	[string]$HorizonAgentPath,
-	[bool]$HorizonAgentPerformanceTracker = $false,
+	[bool]$FeaturePerformanceTracker = $false,
+	[bool]$FeatureUSBRedirection = $false,
+	[bool]$FeatureScannerRedirection = $false,
 	[parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
 	[string]$DEMAgentPath,
 	[parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
@@ -269,7 +271,7 @@ if ($RootCertificatePath){
 }
 
 if ($HorizonAgentPath){
-	if ($HorizonAgentPerformanceTracker){
+	<# if ($FeaturePerformanceTracker){
 		$args = "/s","/v","/qn","VDM_VC_MANAGED_AGENT=1","RDP_CHOICE=1","INSTALL_VDISPLAY_DRIVER=1",`
 		"ADDLOCAL=BlastUDP,Core,HelpDesk,NGVC,PerfTracker,PrintRedir,ClientDriveRedirection,RTAV,RDP,TSMMR,USB,V4V,VmwVaudio,VmwVdisplay,VmwVidd",`
 		"REBOOT=ReallySuppress"
@@ -277,9 +279,23 @@ if ($HorizonAgentPath){
 		$args = "/s","/v","/qn","VDM_VC_MANAGED_AGENT=1","RDP_CHOICE=1","INSTALL_VDISPLAY_DRIVER=1",`
 		"ADDLOCAL=BlastUDP,Core,HelpDesk,NGVC,PrintRedir,ClientDriveRedirection,RTAV,RDP,TSMMR,USB,V4V,VmwVaudio,VmwVdisplay,VmwVidd",`
 		"REBOOT=ReallySuppress"
+	} #>
+	
+	$HorizonAgentFeatures = "ADDLOCAL=BlastUDP,Core,HelpDesk,NGVC,PrintRedir,ClientDriveRedirection,RTAV,RDP,TSMMR,V4V,VmwVaudio,VmwVdisplay,VmwVidd"
+	
+	if ($FeatureUSBRedirection){
+		$HorizonAgentFeatures = $HorizonAgentFeatures + ",USB"
 	}
+	if ($FeatureScannerRedirection){
+		$HorizonAgentFeatures = $HorizonAgentFeatures + ",ScannerRedirection"
+	}
+	if ($FeaturePerformanceTracker){
+		$HorizonAgentFeatures = $HorizonAgentFeatures + ",PerfTracker"
+	}
+	
+	$args = "/s","/v","/qn","VDM_VC_MANAGED_AGENT=1","RDP_CHOICE=1","INSTALL_VDISPLAY_DRIVER=1",$HorizonAgentFeatures,"REBOOT=ReallySuppress"
 	Install-Software -Title "VMware Horizon Agent" -File $HorizonAgentPath -Switches $args -ErrorHandling "Stop"
-
+	
 	Write-Log "Setting Logon Monitor service to automatic"
 	Set-Service vmlm -StartupType Automatic
 }
@@ -354,19 +370,19 @@ if ($VMwareOSOTPath){
 	#.\vmwareosoptimizationtool\VMwareOSOptimizationTool.exe -optimize -background "#000000" -v
 	#.\vmwareosoptimizationtool\VMwareOSOptimizationTool.exe -optimize -t "VMware Templates\Windows 10 and Server 2016 and later" -background "#000000"
 	
-	Write-Log "Customizing default user"
-	Write-Log "Mounting default user NTUSER.DAT" -Indent 2
-	& REG LOAD HKLM\DefaultUser C:\Users\Default\NTUSER.DAT
+	#Write-Log "Customizing default user"
+	#Write-Log "Mounting default user NTUSER.DAT" -Indent 2
+	#& REG LOAD HKLM\DefaultUser C:\Users\Default\NTUSER.DAT
 	
-	if ($OneDrivePath){
-		Write-Log "Re-enabling OneDrive" -Indent 2
+	#if ($OneDrivePath){
+		#Write-Log "Re-enabling OneDrive" -Indent 2
 		#$regValue = "02,00,00,00,00,00,00,00,00,00,00,00"
 		#$hexified = $regValue.Split(',') | % { "0x$_"}
 		#Set-ItemProperty -Path "HKLM:\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" -Name "OneDrive" -Value ([byte[]]$hexified) -Force -ErrorAction SilentlyContinue | Out-Null
-		Remove-ItemProperty -Path "HKLM:\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" -Name "OneDrive" -Force -ErrorAction SilentlyContinue | Out-Null
+		#Remove-ItemProperty -Path "HKLM:\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" -Name "OneDrive" -Force -ErrorAction SilentlyContinue | Out-Null
 		#New-ItemProperty -Path "HKLM:\DefaultUser\Software\Microsoft\CurrentVersion\Run" -Name "OneDrive" -PropertyType String -Value "\"C:\\Program Files (x86)\\Microsoft OneDrive\\OneDrive.exe\" /background"
-		Remove-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Force -ErrorAction SilentlyContinue | Out-Null
-	}
+		#Remove-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Force -ErrorAction SilentlyContinue | Out-Null
+	#}
 	
 	#Write-Log "Enabling serialization" -Indent 2
 	#New-Item -Path "HKLM:\DefaultUser\Software\Microsoft\Windows\CurrentVersion\Explorer" -Name "Serialize" -Force -ErrorAction SilentlyContinue | Out-Null
@@ -375,11 +391,11 @@ if ($VMwareOSOTPath){
 	#Write-Host "Press any key to continue..."
 	#$x = $host.ui.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 	
-	Write-Log "Unmounting default user NTUSER.DAT" -Indent 2
-	Start-Sleep -Seconds 5
-	[gc]::Collect() # necessary call to be able to unload registry hive
-	Start-Sleep -Seconds 5
-	& REG UNLOAD HKLM\DefaultUser
+	#Write-Log "Unmounting default user NTUSER.DAT" -Indent 2
+	#Start-Sleep -Seconds 5
+	#[gc]::Collect() # necessary call to be able to unload registry hive
+	#Start-Sleep -Seconds 5
+	#& REG UNLOAD HKLM\DefaultUser
 	
 	#Reboot recommended
 	#Write-Log "Rebooting machine"

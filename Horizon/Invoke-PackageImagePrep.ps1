@@ -25,7 +25,7 @@ function Write-Log {
 		$LogPath = "$($env:ComputerName)-$(Get-Date -f yyyyMMdd).log"
 	}
 	
-	$msg = "{0} : {1} : {2}{3}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Level.ToUpper(), ("  " * $Indent), $Message
+	$msg = "{0} : {1,-5} : {2}{3}" -f (Get-Date -Format "yyyy-MM-dd HH:mm:ss"), $Level.ToUpper(), ("  " * $Indent), $Message
 	if ($OutTo -match "File"){
 		if (($Level -ne "Verb") -or ($VerbosePreference -eq "Continue")){
 			if ($Clobber){
